@@ -44,11 +44,44 @@ usersRouter.post("/", (req, res) => {
 })
 
 usersRouter.delete("/:id", (req, res) => {
-    res.status(200).json({message: "DELETE USER"})
+    const {id} = req.params
+    if (mongoose.Types.ObjectId.isValid(id)) {
+        Users.findOneAndDelete({_id: id})
+            .then((result) => {
+                if(result == null) {
+                    res.status(404).json({message: "This ID doesn't exist"})
+                } else {
+                    res.status(200).json(result)
+                }
+            })
+            .catch((error) => {
+                res.status(400).json({message: error.message})
+            })
+    }
+    else {
+        res.status(404).json({message: "This ID is not in a valid form"})
+    }
 })
 
 usersRouter.put("/:id", (req, res) => {
-    res.status(200).json({message: "UPDATE USER"})
+    const {id} = req.params
+    const body = req.body
+    if (mongoose.Types.ObjectId.isValid(id)) {
+        Users.findOneAndUpdate({_id: id}, {...body})
+            .then((result) => {
+                if(result == null) {
+                    res.status(404).json({message: "This ID doesn't exist"})
+                } else {
+                    res.status(200).json(result)
+                }
+            })
+            .catch((error) => {
+                res.status(400).json({message: error.message})
+            })
+    }
+    else {
+        res.status(404).json({message: "This ID is not in a valid form"})
+    }
 })
 
 module.exports = usersRouter
