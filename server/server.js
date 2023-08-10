@@ -4,7 +4,8 @@ server.use(express.json())
 require('dotenv').config() // USE DOTENV
 const mongoose = require("mongoose") //GET MONGOOSE FOR SCHEMAS
 const usersRouter = require("./routes/users-router") //GET USERS ROUTER
-
+const cors = require('cors')
+// server.use(cors())
 //CONNECT TO DATABASE
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
@@ -23,4 +24,6 @@ server.get("/", (req, res) => {
 })
 
 // ROUTER
+server.use(cors())
 server.use("/users", usersRouter)
+// server.use(cors())
