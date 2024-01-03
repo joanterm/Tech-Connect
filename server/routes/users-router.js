@@ -57,13 +57,13 @@ usersRouter.delete("/:id", (req, res) => {
             .catch((error) => {
                 res.status(400).json({message: error.message})
             })
-    }
-    else {
+    } else {
         res.status(404).json({message: "This ID is not in a valid form"})
     }
 })
 
 usersRouter.put("/:id", (req, res) => {
+    console.log(req.params)
     const {id} = req.params
     const body = req.body
     if (mongoose.Types.ObjectId.isValid(id)) {
