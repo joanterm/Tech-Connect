@@ -30,9 +30,14 @@ const Home = () => {
       .post(URL, userInfo)
       .then((response) => {
         setUsersData([
-          ...usersData,
-          response.data
+          response.data,
+          ...usersData
         ])
+        setFormData({
+          name: "",
+          about: "",
+          social: ""
+        })
       })
       .catch((error) => {
         console.log("POST ERROR", error)
@@ -54,7 +59,6 @@ const Home = () => {
     }
 
 
-
     const handleSubmit = (e) => {
       e.preventDefault()
       postUserInfo({
@@ -70,7 +74,6 @@ const Home = () => {
         [e.target.name]: e.target.value
       })
     }
-
 
     return ( 
         <div>
