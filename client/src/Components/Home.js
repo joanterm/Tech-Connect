@@ -11,6 +11,7 @@ const Home = () => {
       social: ""
     })
     
+    //GET
     useEffect(() => {
       axios
       .get(URL)
@@ -23,6 +24,7 @@ const Home = () => {
       })
     }, [])
   
+    //POST
     const postUserInfo = (userInfo) => {
       axios
       .post(URL, userInfo)
@@ -37,6 +39,22 @@ const Home = () => {
       })
     }
   
+    //DELETE
+    const deleteUserInfo = (userId) => {
+      axios
+      .delete(`${URL}/${userId}`)
+      .then((response) => {
+        setUsersData(usersData.filter((data) => {
+          return data._id !== userId
+        }))
+      })
+      .catch((error) => {
+        console.log("DELETE ERROR", error)
+      })
+    }
+
+
+
     const handleSubmit = (e) => {
       e.preventDefault()
       postUserInfo({
@@ -52,6 +70,8 @@ const Home = () => {
         [e.target.name]: e.target.value
       })
     }
+
+
     return ( 
         <div>
             <h1>THIS IS GOING TO BE A FORM TO LOG IN</h1>
@@ -93,6 +113,8 @@ const Home = () => {
                 <p>Name: {item.name}</p>
                 <p>About: {item.about}</p>
                 <p>Social: {item.social}</p>
+                <button onClick={() => deleteUserInfo(item._id)}>DELETE</button>
+                <br></br>
                 <br></br>
                 </div>
             ))}         
