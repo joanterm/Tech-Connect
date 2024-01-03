@@ -10,6 +10,7 @@ const Home = () => {
       about: "",
       social: ""
     })
+    const [userDataId, setUserDataId] = useState()
     
     //GET
     useEffect(() => {
@@ -57,6 +58,24 @@ const Home = () => {
         console.log("DELETE ERROR", error)
       })
     }
+
+    //UPDATE
+    const updateUserInfo = () => {
+
+    }
+
+    //UPDATES FORM FIELDS WHEN "UPDATE" BUTTONS IS CLICKED
+    useEffect(() => {
+      usersData.find((data) => {
+        if(data._id === userDataId) {
+          setFormData({
+            name: data.name,
+            about: data.about,
+            social: data.social
+          })
+        }
+      })
+    }, [userDataId])
 
 
     const handleSubmit = (e) => {
@@ -117,6 +136,7 @@ const Home = () => {
                 <p>About: {item.about}</p>
                 <p>Social: {item.social}</p>
                 <button onClick={() => deleteUserInfo(item._id)}>DELETE</button>
+                <button onClick={() => setUserDataId(item._id)}>UPDATE</button>
                 <br></br>
                 <br></br>
                 </div>
