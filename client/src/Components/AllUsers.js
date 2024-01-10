@@ -25,24 +25,24 @@ const AllUsers = () => {
     }, [])
   
     //POST
-    const postUserInfo = (userInfo) => {
-      axios
-      .post(URL, userInfo)
-      .then((response) => {
-        setUsersData([
-          response.data,
-          ...usersData
-        ])
-        setFormData({
-          name: "",
-          about: "",
-          social: ""
-        })
-      })
-      .catch((error) => {
-        console.log("POST ERROR", error)
-      })
-    }
+    // const postUserInfo = (userInfo) => {
+    //   axios
+    //   .post(URL, userInfo)
+    //   .then((response) => {
+    //     setUsersData([
+    //       response.data,
+    //       ...usersData
+    //     ])
+    //     setFormData({
+    //       name: "",
+    //       about: "",
+    //       social: ""
+    //     })
+    //   })
+    //   .catch((error) => {
+    //     console.log("POST ERROR", error)
+    //   })
+    // }
   
     //DELETE
     // const deleteUserInfo = (userId) => {
@@ -77,26 +77,26 @@ const AllUsers = () => {
     // }, [userDataId])
 
 
-    const handleSubmit = (e) => {
-      e.preventDefault()
-      postUserInfo({
-        name: formData.name,
-        about: formData.about,
-        social: formData.social
-      })
-    }
+    // const handleSubmit = (e) => {
+    //   e.preventDefault()
+    //   postUserInfo({
+    //     name: formData.name,
+    //     about: formData.about,
+    //     social: formData.social
+    //   })
+    // }
   
-    const handleChange = (e) => {
-      setFormData({
-        ...formData,
-        [e.target.name]: e.target.value
-      })
-    }
+    // const handleChange = (e) => {
+    //   setFormData({
+    //     ...formData,
+    //     [e.target.name]: e.target.value
+    //   })
+    // }
 
     return ( 
         <div>
             <h1>ALL USERS</h1>
-            <form onSubmit={handleSubmit}>
+            {/* <form onSubmit={handleSubmit}>
                 <label htmlFor="name">Name:</label>
                 <input 
                     type="text"
@@ -125,7 +125,7 @@ const AllUsers = () => {
                     onChange={handleChange}
                 />
                 <button className="submit-button">Submit</button>
-            </form>
+            </form> */}
             {usersData.map((item) => (
                 <div key={item._id}>
                 <p>Name: {item.name}</p>
