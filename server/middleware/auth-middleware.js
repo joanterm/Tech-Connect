@@ -15,10 +15,14 @@ const isEmailTaken = (req, res, next) => {
 
 //CHECKS IS ENTERED EMAIL IS CORRECT
 const isEmailCorrect = (req, res, next) => {
-    const {email} = req.body
+    const {email, password} = req.body
+    if (!email.trim() || !password.trim()) {
+        res.status(422).json({message: "Both email and password are required."})
+        return
+    }
     Auth.findOne({email})
     .then((result) => {
-        if (result == null) {
+        if (result === null) {
             res.status(401).json({message: "Incorrect email. Try again."})
             return
         }
