@@ -2,7 +2,7 @@ const authRouter = require("express").Router()
 const Auth = require("../models/auth-model")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-const {isEmailTaken, checkRegistrationReqs} = require("../middleware/auth-middleware")
+const {isEmailTaken, checkRegistrationReqs, isEmailCorrect} = require("../middleware/auth-middleware")
 
 //JSON TOKEN
 const generateToken = (id) => {
@@ -10,8 +10,18 @@ const generateToken = (id) => {
 }
 
 //LOGIN
-authRouter.post("/login", (req, res) => {
-    res.status(200).json({message: "logged in"})
+authRouter.post("/login", isEmailCorrect, (req, res, next) => {
+    const {email, password} = req.body
+    Auth.findOne({email})
+    .then((result) => {
+        if (bcrypt.compareSync(password, result.password)) {
+            const jwtToken = generateToken(result._id)
+            res.status(200).json({email: result.email, jwtToken: jwtToken})
+        } else {
+            res.status(401).json({message: "Incorrect password. Try again."})
+        }
+    })
+    .catch(next)
 })
 
 //SIGNUP
