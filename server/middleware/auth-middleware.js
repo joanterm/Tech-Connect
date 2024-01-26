@@ -11,14 +11,13 @@ const isEmailTaken = (req, res, next) => {
         } 
     })
     next()
-}
+} 
 
 //CHECKS IS ENTERED EMAIL IS CORRECT
 const isEmailCorrect = (req, res, next) => {
     const {email, password} = req.body
-    if (!email.trim() || !password.trim()) {
+    if (email.trim() === "" || password.trim() === "") {
         res.status(422).json({message: "Both email and password are required."})
-        return
     }
     Auth.findOne({email})
     .then((result) => {
@@ -30,11 +29,10 @@ const isEmailCorrect = (req, res, next) => {
     next()
 }
 
-
 //CHECKS SIGNUP REQUIREMENTS
 const checkRegistrationReqs = (req, res, next) => {
     const {email, password} = req.body
-    if (!email.trim() || !password.trim()) {
+    if (!email || !password) {
         res.status(422).json({message: "Both email and password are required."})
         return
     }
