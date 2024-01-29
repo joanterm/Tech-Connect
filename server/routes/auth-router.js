@@ -9,6 +9,16 @@ const generateToken = (id) => {
     return jwt.sign({_id: id}, process.env.JWT_SECRET, {expiresIn: "5h"})
 }
 
+authRouter.get("/", (req, res) => {
+    Auth.find({}).sort({ createdAt: -1 })
+    .then((result) => {
+        res.status(200).json(result)
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+})
+
 //LOGIN
 authRouter.post("/login", isEmailCorrect, (req, res, next) => {
     const {email, password} = req.body

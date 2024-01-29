@@ -1,23 +1,41 @@
 import { useState } from "react"
+import axios from "axios"
 
 const Signup = () => {
-    const [authData, setAuthData] = useState({
+    const [authFormData, setAuthFormData] = useState({
         email: "",
         password: ""
     })
+    const [formErrors, setFormErrors] = useState("")
     
     const handleAuthSubmit = (e) => {
         e.preventDefault()
-        console.log(authData.email, authData.password)
+        axios
+        .post("/auth/signup", {
+            email: authFormData.email,
+            password: authFormData.password
+        })
+        .then((response) => {
+            console.log(response.data)
+            const clientToken = response.data.jwtToken
+            localStorage.setItem("token", clientToken)
+            setAuthFormData({
+                email: "",
+                password: ""
+            })    
+            setFormErrors("")     
+        })
+        .catch((error) => {
+            setFormErrors(error.response.data.message)
+        })
     }
-
+  
     const handleAuthChange = (e) => {
-        setAuthData({
-            ...authData,
+        setAuthFormData({
+            ...authFormData,
             [e.target.name]: e.target.value
         })   
     }
-    console.log(authData)
 
     return ( 
         <div>
@@ -27,18 +45,19 @@ const Signup = () => {
                     <input 
                     type="text"
                     name="email"
-                    value={authData.email}
+                    value={authFormData.email}
                     onChange={handleAuthChange}
                     />
                 <label htmlFor="password">Password:</label>
                     <input 
                     type="text"
                     name="password"
-                    value={authData.password}
+                    value={authFormData.password}
                     onChange={handleAuthChange}
                     />
                 <button>SIGNUP</button>
             </form>
+            {formErrors}
         </div>
     )
 }

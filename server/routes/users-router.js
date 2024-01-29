@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 const Users = require("../models/users-model")
 
 usersRouter.get("/", (req, res) => {
-    Users.find({})
+    Users.find({}).sort({ createdAt: -1 })
         .then((result) => {
             res.status(200).json(result)
         })
