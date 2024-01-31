@@ -17,7 +17,6 @@ const Signup = () => {
         })
         .then((response) => {
             console.log(response.data)
-            const clientToken = response.data.jwtToken
             localStorage.setItem("token", JSON.stringify(response.data))
             setAuthFormData({
                 email: "",
