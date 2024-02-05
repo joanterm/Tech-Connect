@@ -1,8 +1,9 @@
 const usersRouter = require("express").Router()
 const mongoose = require("mongoose")
 const Users = require("../models/users-model")
+const {checkToken} = require("../middleware/token-middleware")
 
-usersRouter.get("/", (req, res) => {
+usersRouter.get("/", checkToken, (req, res) => {
     Users.find({}).sort({ createdAt: -1 })
         .then((result) => {
             res.status(200).json(result)

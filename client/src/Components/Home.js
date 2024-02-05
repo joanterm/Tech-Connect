@@ -12,6 +12,26 @@ const Home = () => {
   const [formErrors, setFormErrors] = useState("")
   const [user, setUser] = useState(null)
 
+  //IF TOKEN EXISTS -> KEEPS USER'S EMAIL AVAILABE ON PAGE RERENDED
+  useEffect(() => {
+    const parsedToken = JSON.parse(localStorage.getItem("token")) 
+    if (parsedToken) {
+      setUser({
+        email: parsedToken.email
+      })
+    } else {
+      setUser(null)
+    }
+  }, [])
+
+  const logout = () => {
+    if (localStorage.getItem("token")) {
+      localStorage.removeItem("token")
+      navigate("/")  
+      setUser(null)    
+    }
+  }
+
   const handleAuthSubmit = (e) => {
     e.preventDefault()
     console.log(authFormData.email, authFormData.password)
@@ -38,19 +58,6 @@ const Home = () => {
     })
   }
 
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("token")) 
-    if (user) {
-      setUser({
-        ...user,
-        email: user.email
-      })
-    } else {
-      setUser(null)
-    }
-
-  }, [])
-
   const handleAuthChange = (e) => {
     setAuthFormData({
       ...authFormData,
@@ -63,6 +70,7 @@ const Home = () => {
     <div>
       <h1>HOME</h1>
       {user && <div>{user.email}</div>}
+      <button onClick={logout}>LOGOUT</button>
       <form onSubmit={handleAuthSubmit}>
         <label htmlFor="email">Email:</label>
           <input 
