@@ -7,12 +7,13 @@ import {useNavigate} from "react-router-dom"
 
 function App() {
   const navigate = useNavigate()
-
+  
   const logout = () => {
     if (localStorage.getItem("token")) {
       localStorage.removeItem("token")
       navigate("/")      
     }
+    console.log("logged out")
   }
 
   return (

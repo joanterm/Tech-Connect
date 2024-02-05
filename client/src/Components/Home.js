@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Link} from "react-router-dom"
 import axios from "axios"
 
@@ -10,6 +10,7 @@ const Home = () => {
     password: ""
   })
   const [formErrors, setFormErrors] = useState("")
+  const [user, setUser] = useState(null)
 
   const handleAuthSubmit = (e) => {
     e.preventDefault()
@@ -26,6 +27,10 @@ const Home = () => {
             email: "",
             password: ""
         }) 
+        setUser({
+          email: response.data.email,
+          jwtToken: response.data.jwtToken
+        })
         setFormErrors("")     
     })
     .catch((error) => {
@@ -33,17 +38,31 @@ const Home = () => {
     })
   }
 
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("token")) 
+    if (user) {
+      setUser({
+        ...user,
+        email: user.email
+      })
+    } else {
+      setUser(null)
+    }
+
+  }, [])
+
   const handleAuthChange = (e) => {
     setAuthFormData({
       ...authFormData,
       [e.target.name]: e.target.value
     })   
   }
-  console.log(authFormData)
+  console.log(user)
 
   return ( 
     <div>
       <h1>HOME</h1>
+      {user && <div>{user.email}</div>}
       <form onSubmit={handleAuthSubmit}>
         <label htmlFor="email">Email:</label>
           <input 
