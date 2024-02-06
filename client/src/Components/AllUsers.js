@@ -9,18 +9,28 @@ const AllUsers = () => {
       social: ""
     })
     const [userDataId, setUserDataId] = useState()
+    const [errorMessage, setErrorMessage] = useState(false)
     
     //GET
     useEffect(() => {
-      axios
-      .get("/users")
-      .then((response) => {
-        console.log(response.data)
-        setUsersData(response.data)
-      })
-      .catch((error) => {
-        console.log("GET ERROR", error)
-      })
+      if (window.localStorage.getItem("token")) {
+        axios
+        .create({
+          headers: {
+            Authorization: JSON.parse(localStorage.getItem("token")).jwtToken
+          }
+        })
+        .get("/users")
+        .then((response) => {
+          console.log(response.data)
+          setUsersData(response.data)
+        })
+        .catch((error) => {
+          console.log("GET ERROR", error)
+        })
+      } else {
+        setErrorMessage(true)       
+      }
     }, [])
   
     //POST
@@ -124,7 +134,8 @@ const AllUsers = () => {
                     onChange={handleChange}
                 />
                 <button className="submit-button">Submit</button>
-            </form> */}
+            </form> */} 
+            {errorMessage && <div>you need to be logged in</div>}
             {usersData.map((item) => (
                 <div key={item._id}>
                 <p>Name: {item.name}</p>
